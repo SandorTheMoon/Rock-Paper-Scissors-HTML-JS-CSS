@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DOM Project</title>
+
+        <style>
+            body {
+                font-family: Arial;
+
+                color: white;
+                background-color: rgb(34, 34, 34);
+            }
+
+            .move-btn-container {
+                display: flex;
+                gap: 20px;
+                margin-bottom: 50px;
+            }
+
+            .move-btn {
+                background: none;
+                height: 100px;
+                width: 100px;
+
+                border: solid;
+                border-radius: 50%;
+                border-color: rgb(255, 217, 0);
+            }
+
+            .move-icon {
+                height: 70px;
+                width: 70px;
+                
+                border-radius: 50%;
+            }
+
+            .message {
+                display: flex;
+                gap: 20px;
+            }
+
+            .message-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .move-result {
+                height: 50px;
+                width: 50px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h3>DOM Projects</h3>
+
+        <h4>Rock Paper Scissors</h4>
+        <p>Pick your move:</p>
+
+        <div class="move-btn-container">
+            <button class="move-btn" onclick="playGame('rock');">
+                <img class="move-icon" src="rps_asset/rock.png">
+            </button>
+            <button class="move-btn" onclick="playGame('paper');">
+                <img class="move-icon" src="rps_asset/paper.png">
+            </button>
+            <button class="move-btn" onclick="playGame('scissors');">
+                <img class="move-icon" src="rps_asset/scissors.png">
+            </button>
+        </div>    
+
+        <h4>Result</h4>
+        <div class="message">
+            
+        </div>
+        
+        <span style="display: flex;">
+            <p class="wins">Wins: 0,</p>
+            <p class="loses">Loses: 0,</p>
+            <p class="ties">Ties: 0</p>
+        </span>
+
+        <button onclick="resetGame();">Reset Game</button>
+
+        <script>
+            const scores = {
+                win: 0,
+                lose: 0,
+                tie: 0,
+            };
+
+            function pickComputerMove() {
+                choice = Math.floor(Math.random() * 3) + 1;
+                let move = "";
+
+                if (choice === 1) {
+                    move = `rock`;
+                }
+
+                else if (choice === 2) {
+                    move = `paper`;
+                }
+
+                else if (choice === 3) {
+                    move = `scissors`;
+                }
+
+                return move;
+            }
+
+            function playGame(playerMove) {
+                const compMove = pickComputerMove();
+                let msg = '';
+
+                if (playerMove === `rock` && compMove === `scissors`) {
+                    scores.win++;
+                }
+
+                else if (playerMove === `paper` && compMove === `rock`) {
+                    scores.win++;
+                }
+
+                else if (playerMove === `scissors` && compMove === `paper`) {
+                    scores.win++;
+                }
+
+                else if (playerMove === compMove) {
+                    scores.tie++;
+                }
+
+                else {
+                    if (playerMove === `scissors` && compMove === `rock`) {
+                        scores.lose++;
+                    }
+
+                    else if (playerMove === `rock` && compMove === `paper`) {
+                        scores.lose++;
+                    }
+
+                    else if (playerMove === `paper` && compMove === `scissors`) {
+                        scores.lose++;
+                    }
+                }
+
+                
+                msg = `<div class="message-container">
+                            <p>You</p>
+                            <img class="move-result" src="rps_asset/${playerMove}.png">
+                        </div>
+
+                        <div class="message-container">
+                            <img class="move-result" src="rps_asset/${compMove}.png">
+                            <p>Computer</p>
+                        </div>`;
+
+                document.querySelector('.message').innerHTML = msg;
+                document.querySelector('.wins').innerHTML = `Wins: ${scores.win},`;
+                document.querySelector('.loses').innerHTML = `Loses: ${scores.lose},`;
+                document.querySelector('.ties').innerHTML = `Ties: ${scores.tie}`;
+            }
+            
+            function resetGame() {
+                scores.win = 0;
+                scores.lose = 0;
+                scores.tie = 0;
+
+                msg = "The game has been reset.";
+                document.querySelector('.message').innerHTML = msg;
+            }
+        </script>
+    </body>
+</html>
